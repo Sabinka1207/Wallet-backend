@@ -4,8 +4,8 @@ const router = express.Router();
 const controllers = require('../../controllers/transactions');
 
 router.get('/', authenticate, controllers.gettransactions);
-router.get('/categories', authenticate, controllers.getCategories);
+router.get('/categories', controllers.getCategories);
 
-router.post('/', controllers.addNewTransaction);
+router.post('/', authenticate, controllers.addNewTransaction);
 
 module.exports = router;
