@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "http://localhost:3001/api" }],
+  "servers": [{ "url": "https://pure-atoll-67904.herokuapp.com/api" }],
   "tags": [
     {
       "name": "Users",
@@ -268,12 +268,13 @@
           "email": {
             "type": "string",
             "description": "User's email",
-            "format": "email"
+            "format": "email",
+            "example": "use3r@example.com"
           },
           "password": {
             "type": "string",
             "description": "User's password",
-            "example": "blahblah",
+            "example": "Blahblah123",
             "minLength": 6
           },
           "name": {
@@ -308,13 +309,14 @@
             "type": "string",
             "description": "User's email",
             "format": "email",
+            "example": "use3r@example.com",
             "minLength": 6,
             "maxLength": 50
           },
           "password": {
             "type": "string",
             "description": "User's password",
-            "example": "blahblah",
+            "example": "Blahblah123",
             "minLength": 6,
             "maxLength": 25
           }
@@ -378,7 +380,7 @@
           },
           "category": {
             "type": "string",
-            "description": "Category of transactionы",
+            "description": "Category of transactions",
             "example": "Еда"
           },
           "income": {
