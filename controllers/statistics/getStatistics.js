@@ -4,6 +4,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const getStatistics = async (req, res, next) => {
   try {
     const { _id } = req.user;
+    console.log('req.params:', req.params);
     const { year, month } = req.statParams;
 console.log("req.statParams:", req.statParams);
 
@@ -34,17 +35,25 @@ console.log("req.statParams:", req.statParams);
       },
       {
         $group: {
-          _id: { income: '$income', category: '$categoryData.nameStatistics' },
-          categorySum: { $sum: {
-            "$toDouble": '$amount'} 
+          _id: { 
+            year: { $year: "$date" },
+            month: { $month: "$date" },
+            income: '$income', 
+            category: '$categoryData.nameStatistics' },
+            categorySum: { $sum: { "$toDouble": '$amount'} 
           },
         },
       },
       {
         $group: {
-          _id: { income: '$_id.income' },
+          _id: { 
+            year: '$_id.year',
+            month: '$_id.month',
+            income: '$_id.income' },
           categories: {
-            $push: { category: '$_id.category', categorySum: { $round: ['$categorySum', 2] } },
+            $push: { 
+              category: '$_id.category', 
+              categorySum: { $round: ['$categorySum', 2] } },
           },
           totalSum: { $sum: '$categorySum' },
         },
@@ -52,8 +61,8 @@ console.log("req.statParams:", req.statParams);
       {
         $project: {
           _id: 0,
-          year: { $year: '$date' },
-          month: { $month: '$date' },
+          year: '$_id.year',
+          month: '$_id.month',
           income: '$_id.income',
           categories: '$categories',
           totalSum: { $round: ['$totalSum', 2] },
