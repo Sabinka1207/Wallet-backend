@@ -5,14 +5,9 @@ const getStatistics = async (req, res, next) => {
   try {
     const { _id } = req.user;
     const { year, month } = req.statParams;
-console.log("req.statisticsParams:", req.statisticsParams);
+console.log("req.statParams:", req.statParams);
 
     const result = await Transaction.aggregate([
-      {
-        $match: {
-          owner: ObjectId(_id),
-        },
-      },
       {
         $addFields: {
           year: { $year: '$date' },
@@ -21,6 +16,7 @@ console.log("req.statisticsParams:", req.statisticsParams);
       },
       {
         $match: {
+          owner: ObjectId(_id),
           year: year,
           month: month,
         },
@@ -56,6 +52,8 @@ console.log("req.statisticsParams:", req.statisticsParams);
       {
         $project: {
           _id: 0,
+          year: { $year: '$date' },
+          month: { $month: '$date' },
           income: '$_id.income',
           categories: '$categories',
           totalSum: { $round: ['$totalSum', 2] },

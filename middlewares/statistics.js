@@ -32,7 +32,7 @@ console.log("req.query:", req.query);
     }
 
     req.statParams = { year, month };
-
+console.log('req.statParams:', req.statParams);
     next();
   },
 };
