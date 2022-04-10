@@ -4,15 +4,11 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const getStatistics = async (req, res, next) => {
   try {
     const { _id } = req.user;
+    console.log('req.params:', req.params);
     const { year, month } = req.statParams;
-console.log("req.statisticsParams:", req.statisticsParams);
+console.log("req.statParams:", req.statParams);
 
     const result = await Transaction.aggregate([
-      {
-        $match: {
-          owner: ObjectId(_id),
-        },
-      },
       {
         $addFields: {
           year: { $year: '$date' },
@@ -21,6 +17,7 @@ console.log("req.statisticsParams:", req.statisticsParams);
       },
       {
         $match: {
+          owner: ObjectId(_id),
           year: year,
           month: month,
         },
@@ -38,17 +35,25 @@ console.log("req.statisticsParams:", req.statisticsParams);
       },
       {
         $group: {
-          _id: { income: '$income', category: '$categoryData.nameStatistics' },
-          categorySum: { $sum: {
-            "$toDouble": '$amount'} 
+          _id: { 
+            year: { $year: "$date" },
+            month: { $month: "$date" },
+            income: '$income', 
+            category: '$categoryData.nameStatistics' },
+            categorySum: { $sum: { "$toDouble": '$amount'} 
           },
         },
       },
       {
         $group: {
-          _id: { income: '$_id.income' },
+          _id: { 
+            year: '$_id.year',
+            month: '$_id.month',
+            income: '$_id.income' },
           categories: {
-            $push: { category: '$_id.category', categorySum: { $round: ['$categorySum', 2] } },
+            $push: { 
+              category: '$_id.category', 
+              categorySum: { $round: ['$categorySum', 2] } },
           },
           totalSum: { $sum: '$categorySum' },
         },
@@ -56,6 +61,8 @@ console.log("req.statisticsParams:", req.statisticsParams);
       {
         $project: {
           _id: 0,
+          year: '$_id.year',
+          month: '$_id.month',
           income: '$_id.income',
           categories: '$categories',
           totalSum: { $round: ['$totalSum', 2] },
