@@ -19,7 +19,8 @@
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.2.9",
 		"morgan": "1.10.0",
-		"swagger-ui-express": "^4.3.0"
+		"swagger-ui-express": "^4.3.0",
+		"urijs": "^1.19.11"
 	},
 	"devDependencies": {
 		"eslint": "7.19.0",
