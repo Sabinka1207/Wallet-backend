@@ -1,6 +1,22 @@
 const { Transaction, schemas } = require('../../models/transaction');
+const { User } = require('../../models/user');
 
 const CreateError = require('http-errors');
+
+function countBalance(old, amount, income) {
+  let final;
+  console.log('old:', Number(old));
+  console.log('amount:', amount);
+  console.log('income:', income);
+
+  if (income) {
+    final = Number(old) + Number(amount);
+    return final;
+  } else {
+    final = Number(old) - Number(amount);
+    return final;
+  }
+}
 
 const addNewTransaction = async (req, res, next) => {
   try {
@@ -10,7 +26,11 @@ const addNewTransaction = async (req, res, next) => {
       throw new CreateError(400, error.message);
     }
 
-    const balanceUpd = Number(req.owner.balance) + 1;
+    const balanceUpd = countBalance(
+      req.user.balance,
+      req.body.amount,
+      req.body.income,
+    );
     console.log(balanceUpd);
 
     const data = {
@@ -19,6 +39,14 @@ const addNewTransaction = async (req, res, next) => {
       currentBalance: balanceUpd,
     };
     const result = await Transaction.create(data);
+    const updUser = await User.findByIdAndUpdate(req.user.id, {
+      balance: balanceUpd,
+    });
+    console.log(updUser);
+    if (!updUser) {
+      throw new CreateError(404, 'Not found');
+    }
+
     res.status(201).json(result);
   } catch (error) {
     if (error.message.toLowerCase().includes('validation failed')) {
