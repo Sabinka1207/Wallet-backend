@@ -2,7 +2,6 @@ const { Transaction, schemas } = require('../../models/transaction');
 const { User } = require('../../models/user');
 
 const CreateError = require('http-errors');
-const createApplication = require('express/lib/express');
 
 function countBalance(old, amount, income) {
   let final;
