@@ -10,7 +10,14 @@ const addNewTransaction = async (req, res, next) => {
       throw new CreateError(400, error.message);
     }
 
-    const data = { ...req.body, owner: req.user.id };
+    const balanceUpd = Number(req.owner.balance) + 1;
+    console.log(balanceUpd);
+
+    const data = {
+      ...req.body,
+      owner: req.user.id,
+      currentBalance: balanceUpd,
+    };
     const result = await Transaction.create(data);
     res.status(201).json(result);
   } catch (error) {
