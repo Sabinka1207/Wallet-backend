@@ -31,6 +31,10 @@ const addNewTransaction = async (req, res, next) => {
       req.body.amount,
       req.body.income,
     );
+
+    if (balanceUpd < 0) {
+      throw new CreateError(409, 'Недостаточно средств');
+    }
     console.log(balanceUpd);
 
     const data = {
