@@ -1,6 +1,11 @@
 const Joi = require('joi');
 const { Schema, model } = require('mongoose');
+let today = new Date();
+const dd = String(today.getDate()).padStart(2, '0');
+const mm = String(today.getMonth() + 1).padStart(2, '0');
+const yyyy = today.getFullYear();
 
+today = dd + '.' + mm + '.' + yyyy;
 const transactionSchema = Schema(
   {
     category: {
@@ -10,7 +15,7 @@ const transactionSchema = Schema(
     },
     date: {
       type: Date,
-      required: [true, 'Choose the date'],
+      default: today,
     },
     comment: {
       type: String,
