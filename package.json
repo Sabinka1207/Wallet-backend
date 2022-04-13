@@ -21,6 +21,7 @@
 		"morgan": "1.10.0",
 		"swagger-ui-express": "^4.3.0",
 		"urijs": "^1.19.11"
+		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
 		"eslint": "7.19.0",

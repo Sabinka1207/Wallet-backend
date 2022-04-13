@@ -298,6 +298,11 @@
             "type": "number",
             "description": "User's id",
             "example": "5677sf3dffF6hF5FF"
+          },
+          "accessToken": {
+            "type": "string",
+            "description": "Session access token",
+            "example": "nUHuj6G657889334Gy3cbsh&ZTGknzoO931bT"
           }
         }
       },
@@ -381,7 +386,7 @@
           "category": {
             "type": "string",
             "description": "Category of transactions",
-            "example": "Еда"
+            "example": "6249d8479ba6d9bc487c57e4"
           },
           "income": {
             "type": "boolean",
@@ -392,11 +397,6 @@
             "type": "string",
             "description": "Comment on the transaction",
             "example": "Долг"
-          },
-          "currentBalance": {
-            "type": "string",
-            "description": "Balance after the transaction",
-            "example": "27000"
           }
         }
       },
