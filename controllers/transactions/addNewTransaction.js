@@ -5,9 +5,6 @@ const CreateError = require('http-errors');
 
 function countBalance(old, amount, income) {
   let final;
-  console.log('old:', Number(old));
-  console.log('amount:', amount);
-  console.log('income:', income);
 
   if (income) {
     final = Number(old) + Number(amount);
@@ -35,7 +32,6 @@ const addNewTransaction = async (req, res, next) => {
     if (balanceUpd < 0) {
       throw new CreateError(409, 'Недостаточно средств');
     }
-    console.log(balanceUpd);
 
     const data = {
       ...req.body,
@@ -46,7 +42,6 @@ const addNewTransaction = async (req, res, next) => {
     const updUser = await User.findByIdAndUpdate(req.user.id, {
       balance: balanceUpd,
     });
-    console.log(updUser);
     if (!updUser) {
       throw new CreateError(404, 'Not found');
     }
