@@ -1,7 +1,6 @@
 const CreateError = require("http-errors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { v4: uuidv4 } = require("uuid");
 
 const dotenv = require("dotenv");
 dotenv.config();
@@ -23,19 +22,22 @@ const register = async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
 
-    const payload = {
-      id: uuidv4(),
-    };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
-
     await User.create({
       email,
       password: hashPassword,
       name,
-      token,
     });
 
-    res.status(201).json({
+    const userCreated = await User.findOne({ email });
+
+    const payload = {
+      id: userCreated._id,
+    };
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+
+    await User.findByIdAndUpdate(userCreated._id, { token });
+
+    res.json({
       status: "success",
       code: 201,
       token,

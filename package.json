@@ -1,6 +1,9 @@
 {
 	"name": "back-end",
 	"version": "0.0.0",
+  "engines": {
+    "node": "16.x"
+  },
 	"private": true,
 	"scripts": {
 		"start": "cross-env NODE_ENV=production node ./server.js",
@@ -20,6 +23,7 @@
 		"mongoose": "^6.2.9",
 		"morgan": "1.10.0",
 		"swagger-ui-express": "^4.3.0",
+		"urijs": "^1.19.11",
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
